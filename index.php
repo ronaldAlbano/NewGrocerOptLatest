@@ -1,16 +1,13 @@
-<?php include('includes/header.php'); ?>
+<?php
+session_start(); // Start the session if not already started
 
+// Check if a session is active
+if(isset($_SESSION['loggedIn'])) {
+    // If session is active, destroy it
+    session_destroy();
+}
 
-<div class="py-5">
-    <div class="container mt-5">
-        <div class="row">
-            <div class="col-md-12">
-                <h1>GrocerOpt</h1>
-                <a href="login.php" class="btn btn-primary mt-4">Login</a>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-<?php include('includes/footer.php'); ?>
+// Redirect to the login page
+header("Location: login.php");
+exit; // Ensures that no other content is sent
+?>

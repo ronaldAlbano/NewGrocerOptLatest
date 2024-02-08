@@ -14,6 +14,7 @@ if(isset($_SESSION['loggedIn'])){
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <div class="card shadow rounded-4">
+                    <img src="GrocerOpt.png" class="card-img-top" alt="Image">
                     
                     <?php alertMessage(); ?>
                     
