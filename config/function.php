@@ -1,5 +1,5 @@
 <?php
-
+date_default_timezone_set('Asia/Taipei');
 session_start();
 
 require 'dbcon.php';
@@ -207,5 +207,73 @@ function jsonResponse($status, $status_type, $message){
     echo json_encode($response);
     return;
 }
+
+
+function getCount($tableName)
+{
+    global $conn;
+
+    $table = validate($tableName);
+
+    $query = "SELECT * FROM $table";
+    $query_run = mysqli_query($conn, $query);
+    if($query_run){
+
+        $totalCount = mysqli_num_rows($query_run);
+        return $totalCount;
+
+
+    }else{
+        return 'Something Went Wrong!';
+    }
+}
+
+function fetchTotalSalesData($conn) {
+    // Query to retrieve total sales per day
+    $query = "SELECT order_date, SUM(total_amount) AS total_sales FROM orders GROUP BY order_date";
+    $result = mysqli_query($conn, $query);
+
+    $dataPoints = array();
+
+    // Convert query result to data points format
+    while ($row = mysqli_fetch_assoc($result)) {
+        $dataPoints[] = array("label" => $row['order_date'], "y" => $row['total_sales']);
+    }
+
+    return $dataPoints;
+}
+
+function fetchProductDistribution($conn) {
+    // Fetch count of products per category from the database
+    $query = "SELECT c.name AS category_name, COUNT(p.id) AS product_count 
+              FROM categories c 
+              LEFT JOIN products p ON c.id = p.category_id 
+              GROUP BY c.id";
+    $result = mysqli_query($conn, $query);
+
+    // Check for errors
+    if (!$result) {
+        die("Error: " . mysqli_error($conn));
+    }
+
+    $dataPoints = array();
+    $totalCount = 0;
+
+    // Calculate total count of all products
+    while ($row = mysqli_fetch_assoc($result)) {
+        $totalCount += $row['product_count'];
+    }
+
+    // Convert query result to data points format with percentage
+    mysqli_data_seek($result, 0); // Reset result pointer
+    while ($row = mysqli_fetch_assoc($result)) {
+        $percentage = ($row['product_count'] / $totalCount) * 100;
+        $dataPoints[] = array("label" => $row['category_name'], "y" => $percentage);
+    }
+
+    return $dataPoints;
+}
+
+
 
 ?>

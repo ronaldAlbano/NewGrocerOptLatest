@@ -1,4 +1,25 @@
-<?php include('includes/header.php'); ?>
+<?php include('includes/header.php'); 
+
+// Retrieve the role of the logged-in user from the database
+$query = "SELECT role FROM admins WHERE email='$email' LIMIT 1";
+$result = mysqli_query($conn, $query);
+
+if($result && mysqli_num_rows($result) == 1) {
+    $row = mysqli_fetch_assoc($result);
+    $role = $row['role'];
+
+    // Check if the role is "Cashier"
+    if($role == "Cashier") {
+        // Use JavaScript to redirect the user to order-create.php
+        echo "<script>window.location.href = 'order-create.php';</script>";
+        exit(); // Stop further execution
+    }
+} else {
+    // Handle database error or invalid result
+    echo "Error: Unable to fetch user role.";
+    // Optionally, you can display an error message to the user
+    // echo "Error: Unable to fetch user role. Please try again later.";
+}?>
 
 <div class="container-fluid px-4">
    <div class="card mt-4 shadow-sm">
@@ -26,7 +47,7 @@
                 <table class="table table-striped table-bordered">
                     <thead>
                         <tr>
-                            <th>ID</th>
+ 
                             <th>Name</th>
                             <th>Status</th>
                             <th>Action</th>
@@ -36,7 +57,7 @@
 
                         <?php foreach($categories as $item) : ?>
                         <tr>
-                            <td><?= $item['id']?></td>
+
                             <td><?= $item['name']?></td>
                             <td>
                                 <?php   

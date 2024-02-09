@@ -5,25 +5,6 @@ if(!isset($_SESSION['productItems'])){
 }
 ?>
 
-<div class="modal fade" id="orderSuccessModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-body">
-
-                <div class="mb-3 p-4">
-                    <h5 id="orderPlaceSuccessMessage"></h5>
-                </div>
-                <a href="orders.php" class="btn btn-secondary">Close</a>
-                <button type="button" class="btn btn-danger">Print</button>
-                <button type="button" class="btn btn-warning">Download PDF</button>
-            </div>
-        </div>
-    </div>
-
-</div>
-
-
-
 
 
 <div class="container-fluid px-4">
@@ -43,14 +24,18 @@ if(!isset($_SESSION['productItems'])){
 
                         <?php
                             $invoiceNo = validate($_SESSION['invoice_no']);
+                 
 
                             ?>
                             <table style="width: 100%; margin-bottom: 20px;">
                                 <tbody>
                                     <tr>
                                         <td style="text-align: center;" colspan="2">
-                                            <h4 style="font-size: 23px; line-height: 30px; margin: 2px; padding: 0;">Company XYZ</h4>
-                                            <p style="font-size: 16px; line-height: 24px; margin: 2px; padding: 0;">Hi</p>
+                                            <h4 style="font-size: 30px; line-height: 30px; margin: 2px; padding: 0;">GrocerOpt</h4>
+                                            <p style="font-size: 16px; line-height: 24px; margin: 2px; padding: 0;">
+                                            A. Mabini Campus, Anonas Street, <br/>Sta. Mesa Manila, Philippines 1016</p>
+                                            <p style="font-size: 16px; line-height: 24px; margin: 2px; padding: 0;">
+                                            GrocerOpt pvt ld.</p>
                                         </td>
                                     </tr>
                                     <tr>
@@ -137,3 +122,11 @@ if(!isset($_SESSION['productItems'])){
 </div>
 
 <?php include('includes/footer.php'); ?>
+
+<script>
+document.getElementById('saveOrder').addEventListener('click', function() {
+    setTimeout(function() {
+        window.location.href = 'orders.php';
+    }, 3000); // Redirect after 2 seconds
+});
+</script>

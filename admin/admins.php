@@ -1,10 +1,31 @@
-<?php include('includes/header.php'); ?>
+<?php include('includes/header.php'); 
+
+// Retrieve the role of the logged-in user from the database
+$query = "SELECT role FROM admins WHERE email='$email' LIMIT 1";
+$result = mysqli_query($conn, $query);
+
+if($result && mysqli_num_rows($result) == 1) {
+    $row = mysqli_fetch_assoc($result);
+    $role = $row['role'];
+
+    // Check if the role is "Cashier"
+    if($role == "Cashier") {
+        // Use JavaScript to redirect the user to order-create.php
+        echo "<script>window.location.href = 'order-create.php';</script>";
+        exit(); // Stop further execution
+    }
+} else {
+    // Handle database error or invalid result
+    echo "Error: Unable to fetch user role.";
+    // Optionally, you can display an error message to the user
+    // echo "Error: Unable to fetch user role. Please try again later.";
+}?>
 
 <div class="container-fluid px-4">
    <div class="card mt-4 shadow-sm">
         <div class="card-header">
             <h4 class="mb-0">Admins | Staff
-                <a href="admins-create.php" class="btn btn-primary float-end">Add Admin</a>
+                <a href="admins-create.php" class="btn btn-primary float-end">Add Staff</a>
             </h4>
         </div>
         <div class="card-body">
@@ -27,10 +48,10 @@
                 <table class="table table-striped table-bordered">
                     <thead>
                         <tr>
-                            <th>ID</th>
                             <th>Name</th>
                             <th>Email</th>
                             <th>Is_Ban</th>
+                            <th>Role</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -38,7 +59,6 @@
 
                         <?php foreach($admins as $adminItem) : ?>
                         <tr>
-                            <td><?= $adminItem['id']?></td>
                             <td><?= $adminItem['name']?></td>
                             <td><?= $adminItem['email']?></td>
                             <td>
@@ -50,6 +70,7 @@
                                     }
                                 ?>
                             </td>
+                            <td><?= $adminItem['role']?></td>
                             <td>
                                 <a href="admins-edit.php?id=<?=$adminItem['id'];?>" class="btn btn-success btn-sm">Edit</a>
                                 <a href="admins-delete.php?id=<?=$adminItem['id'];?>" class="btn btn-danger btn-sm">Delete</a>

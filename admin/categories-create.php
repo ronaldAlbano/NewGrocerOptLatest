@@ -23,7 +23,7 @@
                         <textarea name="description" class="form-control" rows="3"></textarea>
                     </div>
                     <div class="col-md-6">
-                        <label>Status (UnChecked=Visible, Checked=Hidden)</label>
+                        <label>Check to Hide Category</label>
                         <br/>
                         <input type="checkbox" name="status" style="width:30px;height:30px";>
                     </div>

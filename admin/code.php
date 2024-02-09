@@ -8,7 +8,8 @@ if(isset($_POST['saveAdmin']))
     $email = validate($_POST['email']);
     $password = validate($_POST['password']);
     $phone = validate($_POST['phone']);
-    $is_ban = isset($_POST['is_ban']) == true ? 1:0;
+    $is_ban = isset($_POST['is_ban']) == true ? 1 : 0;
+    $role = validate($_POST['role']); // Add this line to get the role value
 
     if($name != '' && $email != '' && $password != ''){
 
@@ -26,7 +27,8 @@ if(isset($_POST['saveAdmin']))
             'email' => $email,
             'password' => $bcrypt_password,
             'phone' => $phone,
-            'is_ban' => $is_ban
+            'is_ban' => $is_ban,
+            'role' => $role // Add the role data to the $data array
         ];
         $result = insert('admins',$data);        
 

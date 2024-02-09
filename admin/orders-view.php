@@ -87,7 +87,7 @@
 
                                                 <tr>
                                                     <td class="text-end fw-bold">Total Price: </td>
-                                                    <td colspan="3" class="text-end fw-bold">Rs: <?= number_format($orderItemRow['total_amount'],0); ?></td>
+                                                    <td colspan="3" class="text-end fw-bold" style="padding-right: 100px;"><?= number_format($orderItemRow['total_amount'],0); ?></td>
                                                 </tr>
                                             </tbody>
 
@@ -96,7 +96,7 @@
 
 
                                 }else{
-                                    echo '<h5>he</h5>';
+                                    echo '<h5>Something Went Wrong</h5>';
                                     return false;
                                 }
 

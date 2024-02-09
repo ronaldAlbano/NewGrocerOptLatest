@@ -11,7 +11,10 @@ require 'authentication.php'
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Dashboard - SB Admin</title>
+
+    <link rel="icon" type="image/png" href="../groceropt-fav.png">
+    <title>GrocerOpt</title>
+
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
 
     <link href="assets/css/styles.css" rel="stylesheet" />
@@ -24,6 +27,8 @@ require 'authentication.php'
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css"/>
 
     <link href="assets/css/custom.css" rel="stylesheet" />
+
+    <script src="https://cdn.canvasjs.com/canvasjs.min.js"></script>
 
 </head>
 <body class="sb-nav-fixed">

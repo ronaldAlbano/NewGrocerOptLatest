@@ -4,15 +4,10 @@
             <div class="container-fluid px-4">
                 <div class="d-flex align-items-center justify-content-between small">
                     <div class="text-muted">Copyright &copy; GrocerOpt 2024</div>
-                    <div>
-                        <a href="#">Privacy Policy</a>
-                        &middot;
-                        <a href="#">Terms &amp; Conditions</a>
-                    </div>
-                </div>
+                 </div>
             </div>
         </footer>
-        </div>
+
 
         </div>
 
@@ -31,6 +26,7 @@
             $(document).ready(function() {
                 $('.mySelect2').select2();
             });
+            
         </script>
 
         <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>

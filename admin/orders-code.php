@@ -2,6 +2,7 @@
 
 include('../config/function.php');
 
+
 if(!isset($_SESSION['productItems'])){
     $_SESSION['productItems'] = [];
 }
@@ -158,7 +159,7 @@ if(isset($_POST['saveOrder']))
     unset($_SESSION['productItems']);
     unset($_SESSION['invoice_no']);
 
-    jsonResponse(200, 'success', 'Order Placed Successfully');
+    jsonResponse(200, 'success', 'Order Placed Successfully.');
 
 }
 

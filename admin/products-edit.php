@@ -85,7 +85,7 @@
                             </div>
 
                             <div class="col-md-6">
-                                <label>Status (UnChecked=Visible, Checked=Hidden)</label>
+                                <label>Check to Hide Product</label>
                                 <br/>
                                 <input type="checkbox" name="status" <?= $product['data']['status'] == true ? 'checked' : ''; ?> style="width:30px;height:30px";>
                             </div>

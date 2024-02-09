@@ -4,7 +4,7 @@
    <div class="card mt-4 shadow-sm">
         <div class="card-header">
             <h4 class="mb-0">Create Order
-                <a href="#" class="btn btn-danger float-end">Back</a>
+                <a href="orders.php" class="btn btn-danger float-end">Back</a>
             </h4>
         </div>
         <div class="card-body">
@@ -19,24 +19,21 @@
                         <select name="product_id" class="form-select mySelect2">
                             <option value="">-- Select Product --</option>
                             <?php
-                                $products = getAll('products');
-                                if($products){
-                                    if(mysqli_num_rows($products) > 0){
-                                        foreach($products as $prodItem){
-                                            ?>
-                                            <option value="<?= $prodItem['id']; ?>"><?= $prodItem['name']; ?></option>
-                                            <?php
-
-                                        }
-                                    }else{
-                                        echo '<option value="">No product found</option>';
+                                // Modify the SQL query to exclude products with status = 1 or hidden status
+                                $products = mysqli_query($conn, "SELECT p.* 
+                                  FROM products p 
+                                  LEFT JOIN categories c ON p.category_id = c.id 
+                                  WHERE p.status != 1 AND c.status !=1 AND p.quantity != 0");
+                                if($products && mysqli_num_rows($products) > 0){
+                                    while($prodItem = mysqli_fetch_assoc($products)){
+                            ?>
+                            <option value="<?= $prodItem['id']; ?>"><?= $prodItem['name']; ?></option>
+                            <?php
                                     }
-
-                                }else{
-                                    echo '<option value="">Something Went Wrong</option>';
+                                } else {
+                                    echo '<option value="">No product found</option>';
                                 }
                             ?>
-
                         </select>
                     </div>
                     <div class="col-md-2 mb-3">
@@ -45,7 +42,7 @@
                     </div>
                     <div class="col-md-3 mb-3 text-end">
                         <br/>
-                        <button type="submit" name="addItem" class="btn btn-primary">Add Item </button>
+                        <button type="submit" name="addItem" class="btn btn-primary">Add Item</button>
                     </div>
 
                 </div>
@@ -56,59 +53,54 @@
    </div>
 
    <div class="card mt-3">
-        <div class="card-header">
-            <h4 class="mb-0">Products</h4>
-        </div>
-        <div class="card-body" id="productArea">
-            <?php
-            if(isset($_SESSION['productItems']))
-            {
-                $sessionProducts = $_SESSION['productItems'];
-                if(empty($sessionProducts)){
-                    unset($_SESSION['productItemIds']);
-                    unset($_SESSION['productItems']);
-                }
-                ?>
-                <div class="table-responsive mb-3" id="productContent">
-                    <table class="table table-bordered table-striped">
-                        <thead>
-                            <tr>
-                                <th>Id</th>
-                                <th>Product Name</th>
-                                <th>Price</th>
-                                <th>Quantity</th>
-                                <th>Total Price</th>
-                                <th>Remove</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php 
-                                $i = 1;
-                                foreach($sessionProducts as $key => $item) : 
-                                ?>
-                            <tr>
-                                <td><?= $i++; ?></td>
-                                <td><?= $item['name'];?></td>
-                                <td><?= $item['price']; ?></td>
-                                <td>
-                                    <div class="input-group qtyBox">
-                                        <input type="hidden" value="<?= $item['product_id']; ?>" class="prodId" />
-                                        <button class="input-group-text decrement">-</button>
-                                        <input type="text" value="<?= $item['quantity']; ?>" class="qty quantityInput" style="width: 50px; text-align: center;" />
-                                        <button class="input-group-text increment">+</button>
-                                    </div>
-                                </td>
-                                <td><?= number_format($item['price'] * $item['quantity'], 0); ?></td>
-                                <td>
-                                    <a href="order-item-delete.php?index=<?= $key; ?>" class="btn btn-danger">
-                                        Remove
+    <div class="card-header">
+        <h4 class="mb-0">Products</h4>
+    </div>
+    <div class="card-body" id="productArea">
+        <?php
+        if(isset($_SESSION['productItems']) && !empty($_SESSION['productItems']))
+        {
+            $sessionProducts = $_SESSION['productItems'];
+            ?>
+            <div class="table-responsive mb-3" id="productContent">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Product Name</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Total Price</th>
+                            <th>Remove</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php 
+                            $i = 1;
+                            foreach($sessionProducts as $key => $item) : 
+                            ?>
+                        <tr>
+                            <td><?= $i++; ?></td>
+                            <td><?= $item['name'];?></td>
+                            <td><?= $item['price']; ?></td>
+                            <td>
+                                <div class="input-group qtyBox">
+                                    <input type="hidden" value="<?= $item['product_id']; ?>" class="prodId" />
+                                    <button class="input-group-text decrement" type="button">-</button> <!-- Specify type="button" -->
+                                    <input type="text" value="<?= $item['quantity']; ?>" class="qty quantityInput" style="width: 50px; text-align: center;" />
+                                    <button class="input-group-text increment" type="button">+</button> <!-- Specify type="button" -->
+                                </div>
+                            </td>
+                            <td><?= number_format($item['price'] * $item['quantity'], 0); ?></td>
+                            <td>
+                                <a href="order-item-delete.php?index=<?= $key; ?>" class="btn btn-danger">
+                                    Remove
                                 </a>
-                                </td>
-                            </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
-                </div>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
 
                 <div class="mt-2">
                     <hr>
@@ -117,20 +109,27 @@
                         <button type="button" class="btn btn-warning w-100 proceedToPlace">Proceed to place order</button>
                     </div>
                 </div>
+            </div>
 
-
-
-
-                <?php
-            }
-            else
-            {
-                echo '<h5>No Items added</h5>';
-            }
-            ?>
-        </div>
-   </div>
+            <?php
+        }
+        else
+        {
+            echo '<h5>No Items added</h5>';
+        }
+        ?>
+    </div>
+</div>
 
 </div>
+
+<script>
+    // Prevent default form submission when increment or decrement buttons are clicked
+    document.querySelectorAll('.increment, .decrement').forEach(function(button) {
+        button.addEventListener('click', function(event) {
+            event.preventDefault();
+        });
+    });
+</script>
 
 <?php include('includes/footer.php'); ?>
